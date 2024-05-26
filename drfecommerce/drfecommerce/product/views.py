@@ -9,6 +9,7 @@ from pygments import highlight
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import SqlLexer
 from sqlparse import format
+from django.db.models import Prefetch
 
 # Create your views here.
 
@@ -40,18 +41,20 @@ class BrandViewSet(viewsets.ViewSet):
 
 
 class ProductViewSet(viewsets.ViewSet):
-    
     """
     A simple Viewset for viewing all products
     """
 
     queryset = Product.objects.all().isactive()
-    
+
     lookup_field = "slug"
 
     def retrieve(self, request, slug=None):
         serializer = ProductSerializer(
-            self.queryset.filter(slug=slug).select_related("category", "brand"),
+            Product.objects.filter(slug=slug)
+            .select_related("category", "brand")
+            .prefetch_related(Prefetch("product_line"))
+            .prefetch_related(Prefetch("product_line__product_image")),
             many=True,
         )
         data = Response(serializer.data)
