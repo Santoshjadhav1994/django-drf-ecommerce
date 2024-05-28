@@ -3,24 +3,24 @@ import pytest
 
 from .factories import (
     CategoryFactory,
-    BrandFactory,
     ProductFactory,
     ProductLineFactory,
     ProductImageFactory,
+    ProductTypeFactory,
     AttributeFactory,
     AttributeValueFactory,
-    ProductTypeFactory
+    ProductLineAttributeValueFactory
 )
 from rest_framework.test import APIClient
 
 register(CategoryFactory)
-register(BrandFactory)
 register(ProductFactory)
 register(ProductLineFactory)
 register(ProductImageFactory)
 register(AttributeFactory)
 register(AttributeValueFactory)
 register(ProductTypeFactory)
+register(ProductLineAttributeValueFactory)
 
 
 @pytest.fixture
